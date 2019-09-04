@@ -10,3 +10,14 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+config.*
+
+# GoLand stuff
+.idea
+
+# MacOs Stuff
+.DS_Store
+
+# Compiled Go Binary
+nano-api

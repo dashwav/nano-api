@@ -1,0 +1,5 @@
+database_url: "postgresql://postgres@localhost:5432/nanochan?sslmode=disable"
+
+# DEV SETTINGS
+db_debug: true
+tls_skip_verify: true
