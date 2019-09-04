@@ -2,9 +2,6 @@ package api
 
 import (
 	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/dashwav/nano-api/api/app"
@@ -60,11 +57,6 @@ func New(enableCORS bool) (*chi.Mux, error) {
 		}
 	})
 
-	// Initialize File Server
-	workDir, _ := os.Getwd()
-	filesDir := filepath.Join(workDir, "static")
-	FileServer(r, "/static", http.Dir(filesDir))
-
 	return r, nil
 }
 
@@ -81,24 +73,4 @@ func corsConfig() *cors.Cors {
 		AllowCredentials: true,
 		MaxAge:           86400, // Maximum value not ignored by any of major browsers
 	})
-}
-
-// FileServer conveniently sets up a http.FileServer handler to serve
-// static files from a http.FileSystem.
-func FileServer(r chi.Router, path string, root http.FileSystem) {
-	if strings.ContainsAny(path, "{}*") {
-		panic("FileServer does not permit URL parameters.")
-	}
-
-	fs := http.StripPrefix(path, http.FileServer(root))
-
-	if path != "/" && path[len(path)-1] != '/' {
-		r.Get(path, http.RedirectHandler(path+"/", 301).ServeHTTP)
-		path += "/"
-	}
-	path += "*"
-
-	r.Get(path, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fs.ServeHTTP(w, r)
-	}))
 }
