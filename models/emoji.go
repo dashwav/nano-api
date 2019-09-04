@@ -4,7 +4,7 @@ import "time"
 
 // Profile holds specific application settings linked to an Account.
 type Emoji struct {
-	tableName struct{} `sql:"emojis"`
+	tableName struct{} `sql:"nanochan.emojis"`
 	ID        int64 `sql:"emoji_id,pk" json:"id"`
 	Name string `sql:"emoji_name"`
 	MessageId int64 `sql:"message_id,pk"`
