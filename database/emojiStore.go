@@ -18,6 +18,7 @@ func NewEmojiStore(db *pg.DB) *EmojiStore {
 }
 
 type Resp struct {
+	EmojiId int64
 	EmojiName string
 	EmojiCount int
 }
@@ -53,6 +54,7 @@ func (s *EmojiStore) GetAll(animated bool, days int) ([]*Resp, error) {
 		Where("logtime > ?", date).
 		Group("emoji_id").
 		Group("emoji_name").
+		Column("emoji_id").
 		Column("emoji_name").
 		ColumnExpr("count(*) as emoji_count").
 		Select(&response)
