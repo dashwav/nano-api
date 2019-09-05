@@ -1,31 +1,18 @@
 package emoji
 
 import (
-	"github.com/dashwav/nano-api/models"
+	"github.com/dashwav/nano-api/database"
 	"github.com/go-chi/render"
-	"net/http"
+	"sort"
 )
 
-type EmojiResponse struct {
-	*models.Emoji
-	Elapsed int64 `json:"elapsed"`
-}
-
-func NewEmojiResponse(emoji *models.Emoji) *EmojiResponse {
-	resp := &EmojiResponse{Emoji: emoji}
-	return resp
-}
-
-func (rd *EmojiResponse) Render(w http.ResponseWriter, r *http.Request) error {
-	// Pre-processing before a response is marshalled and sent across the wire
-	rd.Elapsed = 10
-	return nil
-}
-
-func NewEmojiListResponse(emojis []*models.Emoji) []render.Renderer {
+func NewEmojiListResponse(emojis []*database.Resp) []render.Renderer {
+	sort.SliceStable(emojis, func(i, j int) bool {
+		return emojis[i].EmojiCount > emojis[j].EmojiCount
+	})
 	list := []render.Renderer{}
 	for _, emoji := range emojis {
-		list = append(list, NewEmojiResponse(emoji))
+		list = append(list, emoji)
 	}
 	return list
 }
