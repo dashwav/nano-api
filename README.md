@@ -4,7 +4,7 @@ How to run locally
 
 Copy example-config.yaml to config.yaml in the working directory and fill in data
 
-Run `go build`
+Run `go build` (supports go 1.12+)
 
 Run `./nano-api serve`
 
